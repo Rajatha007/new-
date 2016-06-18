@@ -1,0 +1,97 @@
+USE projectpms;
+
+SELECT * FROM category;
+SELECT * FROM discount;
+
+SELECT * FROM subcategory;
+
+SELECT * FROM supplier;
+
+CREATE TABLE PRODUCT(productId INT AUTO_INCREMENT PRIMARY KEY,productname VARCHAR(20),description VARCHAR(100),
+manufactrdate DATE,expirydate DATE,maxretailprice DOUBLE,category_id INT REFERENCES category(categoryid),
+subcategoryid INT REFERENCES subcategory(sub_categoryid),supplier_id INT REFERENCES supplier(supplierid),quantity DOUBLE);
+
+
+SELECT * FROM product;
+
+
+DROP TABLE product;
+
+CREATE TABLE product_discount(product_id INT REFERENCES product(productId),discount_id INT REFERENCES discount(discountid));
+
+SELECT * FROM product;
+
+SELECT * FROM product_discount;
+
+
+INSERT INTO category VALUES(1,'Electronics','Electronics items'),
+				(2, 'HealthCare', 'Medical items'),(3, 'Sports&games', 'sports items'),
+			(4, 'Household', 'Household items'),(5, 'Cloth', 'Dress materials');
+			
+DROP TABLE category;			
+CREATE TABLE CATEGORY(categoryid INT AUTO_INCREMENT PRIMARY KEY,categoryname VARCHAR(50),description VARCHAR(100));
+
+
+INSERT INTO subcategory VALUES (101, 'Mobilephone',1),
+		(102, 'Radio',1),
+		(103, 'Television', 1),
+		(104, 'Kurtis',5),
+		(105, 'Leggins',5),
+		(106, 'Churidar', 5);
+		
+	DROP TABLE subcategory;	
+CREATE TABLE SUBCATEGORY(sub_categoryid INT AUTO_INCREMENT PRIMARY KEY,sub_category_name VARCHAR(50),categorid INT REFERENCES CATEGORY(categoryid));
+
+INSERT INTO supplier VALUES(100, 'Keshav', 'Raj', 'Basavanagudi', 'Bangalore', 'Karnataka', '123435', '9300123423'),
+			(200, 'Praveen', 'D', 'Chithradurga', 'Bangalore', 'Karnataka', '670456', '9678123453'),
+			(300, 'Lahari', 'Nags', 'Aashram', 'Bangalore', 'Karnataka', '546327', '8768234251'),
+			(400, 'Divya', 'Sandeep', 'Chikkalsandra', 'Bangalore', 'Karnataka', '345678', '8769564325'),
+			(500, 'Kalitha', 'Hn', 'Kalyannagar', 'Bangalore', 'Karnataka', '234678', '7650378592');
+			
+			
+			
+INSERT INTO discount VALUES(123,'Mega_offer','Mega_offer_from_jan_to_feb',12.4,'2017-06-30'),
+			(333,'onam_offer','onam_offer_from_Aug_to_sept',15,'2018-11-27'),
+			(235,'Newyear_offer','New_year_offer',22,'2017-01-30'),
+			(167,'Xmas_offer','xmas_offer',16,'2016-12-30'),
+			(245,'Pongal_offer','pongal_offer',18.5,'2017-08-15');
+			
+			
+			DROP TABLE discount;
+CREATE TABLE DISCOUNT(discountid INT AUTO_INCREMENT PRIMARY KEY,discountname VARCHAR(60),description VARCHAR(100),discountpercentage DOUBLE,validthru DATE);
+
+==============================================================================================================================
+[6/4/2016 12:44 PM] M, Ranjita: 
+public List<SubCategory> getAllSubCategory() 
+public List<SubCategory> getAllSubCategory() 
+	{
+		List<Category> categories = new ArrayList<Category>();
+		List<SubCategory> subCategory = new ArrayList<SubCategory>();
+		Category category = null;
+		SubCategory subcategory = null;
+		ResultSet rs = null;
+[6/4/2016 12:44 PM] M, Ranjita: 
+try 
+		{
+			rs = getPreparedStatement("select * from subcategory").executeQuery();
+
+			while (rs.next())
+			{
+				subcategory.setSub_category_Id(rs.getInt(1));
+				subcategory.setSub_category_Name(rs.getString(2));
+				int category_Id=rs.getInt(4);
+				for (Category Category2 : categories) 
+				{
+					if (Category2.getCategory_Id()==category_Id)
+					{
+						category = Category2;
+					}						
+				}
+				subcategory.setCategory(category);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return subCategory;
+	}
